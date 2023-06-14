@@ -1,4 +1,4 @@
-# EmployeeManager
+# Employee Manager
 
 This project adheres to the code structure guidelines of Robert "Uncle Bob" Martin's clean code principles. It focuses on key aspects such as meaningful naming, adhering to the "one purpose one function" rule, error handling, and unit testing.
 
