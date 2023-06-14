@@ -10,14 +10,18 @@ import java.util.List;
 
 public class CSV {
 
-    public static <T> List<T> loadCSV(String file, Class<T> type) throws FileNotFoundException {
+    public static <T, U> List<T> loadCSV(String file, Class<T> parentType, Class<U> childType) throws
+            FileNotFoundException {
         return new CsvToBeanBuilder(new FileReader(file))
-                .withType(type)
+                .withType(childType)
                 .build()
                 .parse();
     }
 
-    public static <T> void saveCSV(String file, List<T> list) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
+    public static <T> void saveCSV(String file, List<T> list) throws
+            IOException,
+            CsvRequiredFieldEmptyException,
+            CsvDataTypeMismatchException {
         try (Writer writer = new FileWriter(file)) {
             new StatefulBeanToCsvBuilder(writer)
                     //.withMappingStrategy(new HeaderColumnNameMappingStrategyBuilder<Employee>().build())
