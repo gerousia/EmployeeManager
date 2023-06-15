@@ -12,30 +12,31 @@ import java.util.Optional;
 
 public class EmployeeService {
     private List<Employee> EmployeeList;
-    private static final String FILENAME = "employeedatabase.csv";
+    private static final String filename = "src/main/employee-database.csv";
 
     public EmployeeService() throws FileNotFoundException {
-        this.loadEmployeesFromCSV(FILENAME);
+        this.loadEmployeesFromCSV(filename);
     }
 
     public void loadEmployeesFromCSV(String file) throws
             FileNotFoundException {
-        this.EmployeeList = CSV.loadCSV(file, Employee.class, CSVEmployeeBeanConverter.class);
+        EmployeeList = CSV.loadCSV(file, Employee.class, CSVEmployeeBeanConverter.class);
     }
 
     public void saveEmployeesToCSV() throws
             CsvRequiredFieldEmptyException,
             CsvDataTypeMismatchException,
             IOException {
-        CSV.saveCSV(FILENAME, EmployeeList);
+        CSV.saveCSV(filename, EmployeeList);
     }
 
-    public Employee createDefaultEmployee(String lastName, String firstName) {
-        return Employee.builder()
-                .employeeID(this.generateNewEmployeeID())
-                .employeeLastName(lastName)
-                .employeeFirstName(firstName)
-                .build();
+    public void getEmployeeList() {
+        EmployeeList.forEach(employee -> System.out.printf(
+                "%-10d %-15s %-15s\n",
+                employee.getEmployeeID(),
+                employee.getEmployeeLastName(),
+                employee.getEmployeeFirstName()
+        ));
     }
 
     public Employee getEmployeeFromList(int employeeID) {
@@ -44,6 +45,14 @@ public class EmployeeService {
                 .findFirst();
 
         return person.orElse(null);
+    }
+
+    public Employee createDefaultEmployee(String lastName, String firstName) {
+        return Employee.builder()
+                .employeeID(generateNewEmployeeID())
+                .employeeLastName(lastName)
+                .employeeFirstName(firstName)
+                .build();
     }
 
     public void addEmployeeToList(Employee employee) {
@@ -61,34 +70,29 @@ public class EmployeeService {
         this.EmployeeList.remove(getEmployeeFromList(employeeID));
     }
 
-    public boolean containsEmployeeID(int employeeID) {
-        return this.EmployeeList.stream()
+    public boolean containsEmployeeByID(int employeeID) {
+        return EmployeeList.stream()
                 .anyMatch(employee -> employee.getEmployeeID() == employeeID);
     }
 
-    public boolean containsEmployeeName(String name) {
-        return this.EmployeeList.stream()
-                .anyMatch(employee -> employee.getEmployeeLastName()
-                        .concat(employee.getEmployeeFirstName())
-                        .equalsIgnoreCase(name));
+    public boolean containsEmployeeByName(String name) {
+        return EmployeeList.stream()
+                .anyMatch(employee ->
+                        employee.getEmployeeLastName().equalsIgnoreCase(name)
+                                || employee.getEmployeeFirstName().equalsIgnoreCase(name));
     }
 
-    public void searchEmployee(int employeeID) {
-        this.EmployeeList.stream()
+    public void searchEmployeeByID(int employeeID) {
+        EmployeeList.stream()
                 .filter(employee -> employee.getEmployeeID() == employeeID)
                 .forEach(System.out::println);
     }
 
-    public void searchEmployee(String name) {
-        this.EmployeeList.stream()
-                .filter(employee -> employee.getEmployeeLastName().equalsIgnoreCase(name))
+    public void searchEmployeeByName(String name) {
+        EmployeeList.stream()
+                .filter(employee ->
+                        employee.getEmployeeLastName().equalsIgnoreCase(name)
+                        || employee.getEmployeeFirstName().equalsIgnoreCase(name))
                 .forEach(System.out::println);
     }
-
-    @Override
-    public String toString() {
-        EmployeeList.forEach(System.out::println);
-        return "\n";
-    }
-
 }

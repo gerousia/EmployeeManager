@@ -4,13 +4,12 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @Builder
 public class Employee {
-
     private int employeeID;
     private String employeeLastName;
     private String employeeFirstName;
@@ -30,14 +29,5 @@ public class Employee {
     private double clothingAllowance;
     private double grossSemiMonthlyRate;
     private double hourlyRate;
-
-
-    @Override
-    public String toString() {
-        return String.format("%-10d %-15s %-15s"
-                , this.employeeID
-                , this.employeeLastName
-                , this.employeeFirstName);
-    }
 }
 

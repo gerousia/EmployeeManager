@@ -3,14 +3,12 @@ package com.gerousia.employee;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
 import com.opencsv.bean.CsvNumber;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CSVEmployeeBeanConverter extends Employee {
 
     @CsvBindByName(column = "Employee #", required = true)
